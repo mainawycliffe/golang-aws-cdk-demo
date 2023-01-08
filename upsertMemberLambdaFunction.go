@@ -9,7 +9,6 @@ import (
 )
 
 func upsertMemberLambdaFunction(stack awscdk.Stack, membersTable awsdynamodb.Table) awslambda.Function {
-
 	function := awscdklambdagoalpha.NewGoFunction(stack,
 		jsii.String("upsertMemberLambdaFunction"),
 		&awscdklambdagoalpha.GoFunctionProps{

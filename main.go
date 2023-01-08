@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
-	// "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
 	"github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
 )
@@ -18,12 +17,11 @@ func NewGolangAwsCdkDemoStack(scope constructs.Construct, id string, props *Gola
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
 
-	// The code that defines your stack goes here
+	dynamodbTable := MembersDynamoDBTable(stack)
 
-	// example resource
-	// queue := awssqs.NewQueue(stack, jsii.String("GolangAwsCdkDemoQueue"), &awssqs.QueueProps{
-	// 	VisibilityTimeout: awscdk.Duration_Seconds(jsii.Number(300)),
-	// })
+	upsertMemberLambdaFunction(stack, dynamodbTable)
+	deleteMemberLambdaFunction(stack, dynamodbTable)
+	getMemberLambdaFunction(stack, dynamodbTable)
 
 	return stack
 }
@@ -33,17 +31,11 @@ func main() {
 
 	app := awscdk.NewApp(nil)
 
-	stack := NewGolangAwsCdkDemoStack(app, "GolangAwsCdkDemoStack", &GolangAwsCdkDemoStackProps{
+	NewGolangAwsCdkDemoStack(app, "GolangAwsCdkDemoStack", &GolangAwsCdkDemoStackProps{
 		awscdk.StackProps{
 			Env: env(),
 		},
 	})
-
-	dynamodbTable := MembersDynamoDBTable(stack)
-
-	upsertMemberLambdaFunction(stack, dynamodbTable)
-	deleteMemberLambdaFunction(stack, dynamodbTable)
-	getMemberLambdaFunction(stack, dynamodbTable)
 
 	app.Synth(nil)
 }
