@@ -9,7 +9,6 @@ import (
 )
 
 func deleteMemberLambdaFunction(stack awscdk.Stack, membersTable awsdynamodb.Table) awslambda.Function {
-
 	function := awscdklambdagoalpha.NewGoFunction(stack,
 		jsii.String("deleteMemberLambdaFunction"),
 		&awscdklambdagoalpha.GoFunctionProps{
