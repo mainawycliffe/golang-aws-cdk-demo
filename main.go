@@ -33,11 +33,17 @@ func main() {
 
 	app := awscdk.NewApp(nil)
 
-	NewGolangAwsCdkDemoStack(app, "GolangAwsCdkDemoStack", &GolangAwsCdkDemoStackProps{
+	stack := NewGolangAwsCdkDemoStack(app, "GolangAwsCdkDemoStack", &GolangAwsCdkDemoStackProps{
 		awscdk.StackProps{
 			Env: env(),
 		},
 	})
+
+	dynamodbTable := MembersDynamoDBTable(stack)
+
+	upsertMemberLambdaFunction(stack, dynamodbTable)
+	deleteMemberLambdaFunction(stack, dynamodbTable)
+	getMemberLambdaFunction(stack, dynamodbTable)
 
 	app.Synth(nil)
 }
